@@ -42,7 +42,11 @@
                     }
                 },
                 {
+<<<<<<< HEAD
                     "source": "C:\\development\\Flutter_Playground\\fooo\\FoodZilla\\android\\app\\src\\main\\res\\values\\styles.xml",
+=======
+                    "source": "C:\\development\\Flutter_Playground\\main\\foodzilla\\android\\app\\src\\main\\res\\values\\styles.xml",
+>>>>>>> main
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
