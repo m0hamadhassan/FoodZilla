@@ -18,7 +18,7 @@ final List<Food> recommendedFoods = [
     'No1. in Sales',
     4.8,
     12,
-    1,
+    0,
     highlight: true,
   ),
   Food(
@@ -27,6 +27,6 @@ final List<Food> recommendedFoods = [
     '',
     4.6,
     15,
-    1,
+    0,
   )
 ];

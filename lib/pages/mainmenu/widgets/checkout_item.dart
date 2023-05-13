@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/colors/colors.dart';
 import '../models/food.dart';
+import 'food_item.dart';
 
 class CheckoutItem extends StatelessWidget {
   final Food checkoutItem;
@@ -49,7 +50,7 @@ class CheckoutItem extends StatelessWidget {
                         children: [
                           Text(checkoutItem.name,
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 height: 1.5,
                               )),
@@ -74,11 +75,17 @@ class CheckoutItem extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               )),
                           Text(checkoutItem.price.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                fontSize: 16,
                               )),
+                          SizedBox(width: 50),
+                          Text('Quantity: ${checkoutItem.quantity}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ))
                         ],
                       ),
                     ]),

@@ -1,4 +1,4 @@
-#Fri May 12 21:23:32 EET 2023
-base.0=C\:\\Users\\moham\\Desktop\\main\\foodzilla\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+#Sat May 13 13:51:18 EET 2023
+base.0=C\:\\Users\\Asus-Tux\\Desktop\\Project\\FoodZilla\\FoodZilla\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

@@ -88,6 +88,10 @@ class _LandingPageState extends State<LandingPage> {
                                 FoodItem.checkoutList.clear(),
                                 FoodItem.totalPrice = 0,
                                 Navigator.pop(context),
+                                for (int i = 0;
+                                    i < recommendedFoods.length;
+                                    i++)
+                                  {recommendedFoods[i].quantity = 0},
                               },
                           child: Text('Checkout',
                               style: TextStyle(
