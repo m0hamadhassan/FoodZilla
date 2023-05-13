@@ -5,10 +5,21 @@ import 'package:get/get.dart';
 import '../mainmenu/Landing.dart';
 
 class LoginPage extends StatelessWidget {
+  final snackBar = SnackBar(
+    duration: Duration(milliseconds: 1000),
+    content: const Text(
+      'wrong username or password',
+      style: TextStyle(color: Colors.white, fontSize: 15),
+    ),
+    backgroundColor: (Colors.red),
+    action: SnackBarAction(
+      label: 'dismiss',
+      onPressed: () {},
+    ),
+  );
   //for login logic
   final TextEditingController loginUserNameController = TextEditingController();
   final TextEditingController loginPasswordController = TextEditingController();
-  // final String credentials[2]={'mohamad','123456'};
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +52,8 @@ class LoginPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // Implement login logic here
-                Get.to(() => LandingPage());
-                loginLogicFunction();
+                loginLogicFunction(context, loginUserNameController.text,
+                    loginPasswordController.text);
               },
               child: Text('Login', style: TextStyle(fontSize: 25)),
             ),
@@ -68,7 +79,16 @@ class LoginPage extends StatelessWidget {
   }
 
 //LOGIN LOGIC FUNCTION
-  void loginLogicFunction() {
+  void loginLogicFunction(context, String userName, String passwrd) {
+    //this list will be from database
+    List<String> creds = ['mohamad', '1234'];
+
+    if (userName == creds[0] && passwrd == creds[1]) {
+      Get.to(() => LandingPage());
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
     print("\n" + loginUserNameController.text);
     print("\n" + loginPasswordController.text);
   }
