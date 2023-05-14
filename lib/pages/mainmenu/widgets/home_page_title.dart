@@ -6,7 +6,7 @@ class HomePageTitle extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(
-        top: 30,
+        top: 20,
       ),
       padding: EdgeInsets.symmetric(
         horizontal: 25,

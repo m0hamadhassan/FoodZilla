@@ -3,7 +3,7 @@ import 'package:foodzilla/pages/splash/splashPage.dart';
 import 'package:get/get.dart';
 
 void main() {
-  runApp(const FoodZilla());
+  runApp(FoodZilla());
 }
 
 class FoodZilla extends StatelessWidget {
