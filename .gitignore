@@ -1,3 +1,6 @@
+#all except lib
+/*
+!/lib
 # Miscellaneous
 *.class
 *.log

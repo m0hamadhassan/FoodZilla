@@ -30,5 +30,5 @@ class FoodZilla extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: SplashBody());
   }
-  //comment to test git hub
+  //comment to test git hub here update
 }
