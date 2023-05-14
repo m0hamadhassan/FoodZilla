@@ -1,4 +1,4 @@
-#Sat May 13 16:16:49 EET 2023
-base.0=C\:\\development\\Flutter_Playground\\main\\foodzilla\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+#Sun May 14 23:53:09 EET 2023
+base.0=C\:\\development\\Flutter_Playground\\fooo\\FoodZilla\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

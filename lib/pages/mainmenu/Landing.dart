@@ -20,6 +20,7 @@ class _LandingPageState extends State<LandingPage> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -28,7 +29,8 @@ class _LandingPageState extends State<LandingPage> {
               child: TextField(
                 controller: _textEditingController,
                 decoration: InputDecoration(
-                  hintText: 'Search',
+                  filled: true,
+                  hintText: 'Search with Meal or Restaurent',
                   border: InputBorder.none,
                 ),
               ),
@@ -52,14 +54,37 @@ class _LandingPageState extends State<LandingPage> {
         //   begin: Alignment.centerLeft,
         //   end: Alignment.centerRight,
         // )),
+
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // CustomAppbar(),
             HomePageTitle(),
             Expanded(
               child: FoodList(recommendedFoods),
-            )
+            ),
+            SizedBox(height: 24.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Implement login logic here
+                  },
+                  child: Text('Meals', style: TextStyle(fontSize: 22)),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Implement login logic here
+                  },
+                  child: Text('Restaurents', style: TextStyle(fontSize: 22)),
+                ),
+              ],
+            ),
+            SizedBox(height: 80.0),
           ],
         ),
       ),
@@ -88,6 +113,10 @@ class _LandingPageState extends State<LandingPage> {
                                 FoodItem.checkoutList.clear(),
                                 FoodItem.totalPrice = 0,
                                 Navigator.pop(context),
+                                for (int i = 0;
+                                    i < recommendedFoods.length;
+                                    i++)
+                                  {recommendedFoods[i].quantity = 0},
                               },
                           child: Text('Checkout',
                               style: TextStyle(

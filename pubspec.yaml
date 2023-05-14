@@ -32,7 +32,9 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.6.5
-
+  sqflite: ^2.0.0
+  path: ^1.8.0
+  path_provider: ^2.0.5
 dev_dependencies:
 
   # The "flutter_lints" package below contains a set of recommended lints to

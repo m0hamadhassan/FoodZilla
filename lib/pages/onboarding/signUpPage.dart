@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../../database/database.dart';
 
 class SignupPage extends StatelessWidget {
   //for signup logic
@@ -6,8 +10,11 @@ class SignupPage extends StatelessWidget {
   final TextEditingController signPasswordController = TextEditingController();
   final TextEditingController signConfPasswordController =
       TextEditingController();
+  final TextEditingController signEmailController = TextEditingController();
   final TextEditingController signMobileController = TextEditingController();
   final TextEditingController signAddrsController = TextEditingController();
+  //for connecting database
+  sqlDb db = new sqlDb();
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +55,14 @@ class SignupPage extends StatelessWidget {
             ),
             SizedBox(height: 16.0),
             TextFormField(
+              controller: signEmailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+              ),
+              obscureText: false,
+            ),
+            SizedBox(height: 16.0),
+            TextFormField(
               controller: signMobileController,
               decoration: InputDecoration(
                 labelText: 'Mobile Number',
@@ -72,9 +87,9 @@ class SignupPage extends StatelessWidget {
                   minimumSize: MaterialStateProperty.all(
                       Size(175, 75)) // Set the minimum size of the button
                   ),
-              onPressed: () {
+              onPressed: () async {
                 // Implement signup logic here
-                signUpLogicFunction();
+                signUpLogicFunction(context, db);
               },
               child: Text('Sign Up', style: TextStyle(fontSize: 25)),
             ),
@@ -84,11 +99,98 @@ class SignupPage extends StatelessWidget {
     ));
   }
 
-  void signUpLogicFunction() {
-    print("\n" + siginUserNameController.text);
-    print("\n" + signPasswordController.text);
-    print("\n" + signConfPasswordController.text);
-    print("\n" + signMobileController.text);
-    print("\n" + signAddrsController.text);
+//signUp logic function
+  void signUpLogicFunction(context, sqlDb db) async {
+    String username = siginUserNameController.text;
+    String email = signEmailController.text;
+    String password = signPasswordController.text;
+    String passwordConfirm = signConfPasswordController.text;
+    String address = signAddrsController.text;
+    String phoneNumber = signMobileController.text;
+    bool emailExists = await db.isEmailAlreadyExists(email);
+    bool usernameExists = await db.isEmailAlreadyExists(username);
+    if (password != passwordConfirm) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Password doesn\'t match, Enter password again'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (emailExists) {
+      // Email already exists in the database, show an error dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content:
+                Text('Email already exists. Please choose a different email'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (usernameExists) {
+      // Email already exists in the database, show an error dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(
+                'Username already exists. Please choose a different Username'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      await db.insertData('''
+                INSERT INTO "users" (username, email, password, address, phone_number)
+                VALUES
+                ('$username','$email','$password','$address','$phoneNumber');
+                ''');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Successful'),
+            content: Text('Account Created Successfully, Login now'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Get.back();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }

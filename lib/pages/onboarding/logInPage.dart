@@ -2,9 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:foodzilla/pages/onboarding/signUpPage.dart';
 import 'package:get/get.dart';
 
+import '../../database/database.dart';
 import '../mainmenu/Landing.dart';
 
 class LoginPage extends StatelessWidget {
+//database connection variable
+  sqlDb db = new sqlDb();
+
+  final snackBar = SnackBar(
+    duration: Duration(milliseconds: 1000),
+    content: const Text(
+      'Wrong Username or Password',
+      style: TextStyle(color: Colors.white, fontSize: 18),
+    ),
+    backgroundColor: (Colors.red),
+  );
   //for login logic
   final TextEditingController loginUserNameController = TextEditingController();
   final TextEditingController loginPasswordController = TextEditingController();
@@ -38,10 +50,12 @@ class LoginPage extends StatelessWidget {
             ),
             SizedBox(height: 24.0),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // Implement login logic here
-                Get.to(() => LandingPage());
-                loginLogicFunction();
+                // List<Map> response2 =
+                //     await db.checkPassword(loginUserNameController.text);
+                // print(response2[0]['password']);
+                loginLogicFunction(context, db);
               },
               child: Text('Login', style: TextStyle(fontSize: 25)),
             ),
@@ -67,8 +81,56 @@ class LoginPage extends StatelessWidget {
   }
 
 //LOGIN LOGIC FUNCTION
-  void loginLogicFunction() {
-    print("\n" + loginUserNameController.text);
-    print("\n" + loginPasswordController.text);
+  void loginLogicFunction(context, sqlDb db) async {
+    //this list will be from database
+    String userName = loginUserNameController.text;
+    String passwrd = loginPasswordController.text;
+
+    dynamic returnPass = await db.checkPassword(userName);
+    if (await db.isUsernameExists(userName) == false) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Username not found'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      if (returnPass != passwrd) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Incorrect Password'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        Get.off(LandingPage());
+      }
+    }
+    print(returnPass);
+
+    // print("\n" + loginUserNameController.text);
+    // print("\n" + loginPasswordController.text);
   }
 }

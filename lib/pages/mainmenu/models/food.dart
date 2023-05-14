@@ -2,6 +2,7 @@ class Food {
   String imageUrl;
   String desc;
   String name;
+
   num score;
   num price;
   num quantity;
@@ -18,7 +19,7 @@ final List<Food> recommendedFoods = [
     'No1. in Sales',
     4.8,
     12,
-    1,
+    0,
     highlight: true,
   ),
   Food(
@@ -27,6 +28,57 @@ final List<Food> recommendedFoods = [
     '',
     4.6,
     15,
-    1,
-  )
+    0,
+  ),
+  Food(
+    'assets/pictures/margritaPizza.jpg',
+    'Margarita Pizza',
+    'No1. in Sales',
+    4.8,
+    12,
+    0,
+    highlight: true,
+  ),
+  Food(
+    'assets/pictures/pepperoniPizza.jpg',
+    'Pepperoni Pizza',
+    '',
+    4.6,
+    15,
+    0,
+  ),
+  Food(
+    'assets/pictures/margritaPizza.jpg',
+    'Margarita Pizza',
+    'No1. in Sales',
+    4.8,
+    12,
+    0,
+    highlight: true,
+  ),
+  Food(
+    'assets/pictures/pepperoniPizza.jpg',
+    'Pepperoni Pizza',
+    '',
+    4.6,
+    15,
+    0,
+  ),
+  Food(
+    'assets/pictures/margritaPizza.jpg',
+    'Margarita Pizza',
+    'No1. in Sales',
+    4.8,
+    12,
+    0,
+    highlight: true,
+  ),
+  Food(
+    'assets/pictures/pepperoniPizza.jpg',
+    'Pepperoni Pizza',
+    '',
+    4.6,
+    15,
+    0,
+  ),
 ];
