@@ -29,5 +29,6 @@ class FoodZilla extends StatelessWidget {
                 )),
         debugShowCheckedModeBanner: false,
         home: SplashBody());
+    //edit
   }
 }
