@@ -1,7 +1,7 @@
 #all except lib
 /*
 !/lib
-
+!/assets/
 # Miscellaneous
 *.class
 *.log
