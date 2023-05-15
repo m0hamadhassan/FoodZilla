@@ -20,7 +20,6 @@ class _LandingPageState extends State<LandingPage> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
-
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -54,7 +53,6 @@ class _LandingPageState extends State<LandingPage> {
         //   begin: Alignment.centerLeft,
         //   end: Alignment.centerRight,
         // )),
-
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
