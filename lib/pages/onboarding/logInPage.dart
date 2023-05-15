@@ -6,9 +6,6 @@ import '../../database/database.dart';
 import '../mainmenu/Landing.dart';
 
 class LoginPage extends StatelessWidget {
-//database connection variable
-  sqlDb db = new sqlDb();
-
   final snackBar = SnackBar(
     duration: Duration(milliseconds: 1000),
     content: const Text(
@@ -55,7 +52,7 @@ class LoginPage extends StatelessWidget {
                 // List<Map> response2 =
                 //     await db.checkPassword(loginUserNameController.text);
                 // print(response2[0]['password']);
-                loginLogicFunction(context, db);
+                loginLogicFunction(context);
               },
               child: Text('Login', style: TextStyle(fontSize: 25)),
             ),
@@ -81,8 +78,10 @@ class LoginPage extends StatelessWidget {
   }
 
 //LOGIN LOGIC FUNCTION
-  void loginLogicFunction(context, sqlDb db) async {
+  void loginLogicFunction(context) async {
     //this list will be from database
+    //database connection variable
+    sqlDb db = new sqlDb();
     String userName = loginUserNameController.text;
     String passwrd = loginPasswordController.text;
 

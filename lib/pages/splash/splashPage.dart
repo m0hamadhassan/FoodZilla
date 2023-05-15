@@ -50,7 +50,7 @@ class _SplashBodyState extends State<SplashBody>
   }
 
   void goToNextView() {
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 2), () {
       //after delay and splash go to login page
       Get.off(() => LoginPage(), transition: Transition.fade);
     });

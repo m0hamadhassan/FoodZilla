@@ -30,7 +30,7 @@ class _LandingPageState extends State<LandingPage> {
                 controller: _textEditingController,
                 decoration: InputDecoration(
                   filled: true,
-                  hintText: 'Search with Meal or Restaurent',
+                  hintText: 'Search for Meal or Restaurent',
                   border: InputBorder.none,
                 ),
               ),

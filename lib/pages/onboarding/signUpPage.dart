@@ -14,7 +14,6 @@ class SignupPage extends StatelessWidget {
   final TextEditingController signMobileController = TextEditingController();
   final TextEditingController signAddrsController = TextEditingController();
   //for connecting database
-  sqlDb db = new sqlDb();
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +88,7 @@ class SignupPage extends StatelessWidget {
                   ),
               onPressed: () async {
                 // Implement signup logic here
-                signUpLogicFunction(context, db);
+                signUpLogicFunction(context);
               },
               child: Text('Sign Up', style: TextStyle(fontSize: 25)),
             ),
@@ -99,8 +98,30 @@ class SignupPage extends StatelessWidget {
     ));
   }
 
+//show dialogue function
+  void normalDialogueShow(context, String title, String content) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 //signUp logic function
-  void signUpLogicFunction(context, sqlDb db) async {
+  void signUpLogicFunction(context) async {
+    sqlDb db = new sqlDb();
     String username = siginUserNameController.text;
     String email = signEmailController.text;
     String password = signPasswordController.text;
@@ -110,63 +131,16 @@ class SignupPage extends StatelessWidget {
     bool emailExists = await db.isEmailAlreadyExists(email);
     bool usernameExists = await db.isEmailAlreadyExists(username);
     if (password != passwordConfirm) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Password doesn\'t match, Enter password again'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      normalDialogueShow(
+          context, 'Error', 'Password doesn\'t match, Enter password again');
     } else if (emailExists) {
       // Email already exists in the database, show an error dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content:
-                Text('Email already exists. Please choose a different email'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      normalDialogueShow(context, 'Error',
+          'Email already exists. Please choose a different email');
     } else if (usernameExists) {
       // Email already exists in the database, show an error dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text(
-                'Username already exists. Please choose a different Username'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      normalDialogueShow(context, 'Error',
+          'Username already exists. Please choose a different Username');
     } else {
       await db.insertData('''
                 INSERT INTO "users" (username, email, password, address, phone_number)
