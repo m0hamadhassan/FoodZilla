@@ -2,6 +2,7 @@
 /*
 !/lib
 !/assets/
+!pubspec.yaml
 # Miscellaneous
 *.class
 *.log
