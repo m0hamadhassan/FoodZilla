@@ -50,10 +50,6 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter:
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "assets/icon.png"
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -64,7 +60,6 @@ flutter_icons:
     - assets/images/
     - assets/pictures/margritaPizza.jpg
     - assets/pictures/pepperoniPizza.jpg
-    - assets/icon.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
