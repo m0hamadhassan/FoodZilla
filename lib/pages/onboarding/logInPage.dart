@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodzilla/pages/onboarding/signUpPage.dart';
 import 'package:get/get.dart';
-
 import '../../database/database.dart';
 import '../mainmenu/Landing.dart';
 
@@ -128,7 +127,6 @@ class LoginPage extends StatelessWidget {
       }
     }
     print(returnPass);
-
     // print("\n" + loginUserNameController.text);
     // print("\n" + loginPasswordController.text);
   }

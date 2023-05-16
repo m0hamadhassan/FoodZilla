@@ -44,7 +44,10 @@ class SignupPage extends StatelessWidget {
               ),
               obscureText: true,
             ),
-            SizedBox(height: 16.0),
+            SizedBox(
+              height: 16.0,
+              width: 16.0,
+            ),
             TextFormField(
               controller: signConfPasswordController,
               decoration: InputDecoration(
@@ -130,7 +133,11 @@ class SignupPage extends StatelessWidget {
     String phoneNumber = signMobileController.text;
     bool emailExists = await db.isEmailAlreadyExists(email);
     bool usernameExists = await db.isEmailAlreadyExists(username);
-    if (password != passwordConfirm) {
+
+    if (username.length < 5) {
+      normalDialogueShow(
+          context, 'Error', 'Short username, must be at least 5 characters');
+    } else if (password != passwordConfirm) {
       normalDialogueShow(
           context, 'Error', 'Password doesn\'t match, Enter password again');
     } else if (emailExists) {
