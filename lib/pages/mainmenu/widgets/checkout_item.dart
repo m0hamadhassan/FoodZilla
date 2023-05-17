@@ -61,9 +61,7 @@ class CheckoutItem extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: checkoutItem.highlight
-                              ? kPrimaryColor
-                              : Colors.grey.withOpacity(0.8),
+                          color: kPrimaryColor,
                           height: 1.2,
                         ),
                       ),
