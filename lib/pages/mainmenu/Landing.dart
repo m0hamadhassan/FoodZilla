@@ -47,12 +47,6 @@ class _LandingPageState extends State<LandingPage> {
       ),
       // backgroundColor: kBackground,
       body: Container(
-        // decoration: BoxDecoration(
-        //     gradient: LinearGradient(
-        //   colors: [leftGradient, rightGradient],
-        //   begin: Alignment.centerLeft,
-        //   end: Alignment.centerRight,
-        // )),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
