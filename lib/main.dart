@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodzilla/pages/splash/splashPage.dart';
+import 'package:foodzilla/test.dart';
 import 'package:get/get.dart';
 
 void main() {

@@ -6,7 +6,9 @@ import 'food_item.dart';
 class FoodList extends StatelessWidget {
   var totalPrice = 0;
 
+//wwill be from data base
   final List<Food> foodList;
+
   FoodList(this.foodList);
   @override
   Widget build(BuildContext context) {
