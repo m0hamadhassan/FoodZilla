@@ -3,13 +3,17 @@ class Food {
   String restaurantName;
   String name;
 
-  num score;
+  // num score;
   num price;
   num quantity;
-  bool highlight;
-  Food(this.imageUrl, this.name, this.restaurantName, this.score, this.price,
-      this.quantity,
-      {this.highlight = false});
+  // bool highlight;
+  Food(
+    this.imageUrl,
+    this.name,
+    this.restaurantName,
+    this.price,
+    this.quantity,
+  );
 }
 
 final List<Food> recommendedFoods = [
@@ -17,18 +21,14 @@ final List<Food> recommendedFoods = [
     'assets/pictures/margritaPizza.jpg',
     'Margarita Pizza',
     'FoodZilla',
-    4.8,
     12,
     0,
-    highlight: true,
   ),
   Food(
     'assets/pictures/pepperoniPizza.jpg',
     'Pepperoni Pizza',
     'FoodZilla',
-    4.6,
     15,
     0,
-    highlight: true,
   ),
 ];
