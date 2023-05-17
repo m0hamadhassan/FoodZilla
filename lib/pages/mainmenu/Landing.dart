@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:foodzilla/pages/mainmenu/widgets/checkout_list.dart';
 import 'package:foodzilla/pages/mainmenu/widgets/food_item.dart';
 import 'package:foodzilla/pages/mainmenu/widgets/food_list.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import '../checkout/checkoutPage.dart';
 import 'constants/colors/colors.dart';
 import 'models/food.dart';
 import 'widgets/home_page_title.dart';
@@ -52,6 +55,7 @@ class _LandingPageState extends State<LandingPage> {
           children: [
             // CustomAppbar(),
             HomePageTitle(),
+
             Expanded(
               child: FoodList(recommendedFoods),
             ),
@@ -80,6 +84,7 @@ class _LandingPageState extends State<LandingPage> {
           ],
         ),
       ),
+      //Checkout button
       floatingActionButton: FloatingActionButton(
           onPressed: () => {
                 showModalBottomSheet(
@@ -100,7 +105,7 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                       SizedBox(height: 20),
                       CheckoutList(FoodItem.checkoutList),
-                      OutlinedButton(
+                      ElevatedButton(
                           onPressed: () => {
                                 FoodItem.checkoutList.clear(),
                                 FoodItem.totalPrice = 0,
@@ -109,13 +114,14 @@ class _LandingPageState extends State<LandingPage> {
                                     i < recommendedFoods.length;
                                     i++)
                                   {recommendedFoods[i].quantity = 0},
+                                Get.to(CheckoutPage())
                               },
                           child: Text('Checkout',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
+                                fontSize: 25,
                                 fontWeight: FontWeight.bold,
-                              )))
+                              ))),
                     ],
                   )),
                 )

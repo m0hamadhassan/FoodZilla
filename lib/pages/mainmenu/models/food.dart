@@ -2,7 +2,6 @@ class Food {
   String imageUrl;
   String restaurantName;
   String name;
-
   // num score;
   num price;
   num quantity;
@@ -30,23 +29,5 @@ final List<Food> recommendedFoods = [
     'FoodZilla',
     15,
     0,
-  ),
-  Food(
-    'assets/pictures/pepperoniPizza.jpg',
-    'Pepperoni Pizza',
-    'FoodZilla',
-    4.6,
-    15,
-    0,
-    highlight: true,
-  ),
-  Food(
-    'assets/pictures/pepperoniPizza.jpg',
-    'Pepperoni Pizza',
-    'FoodZilla',
-    4.6,
-    15,
-    0,
-    highlight: true,
   ),
 ];

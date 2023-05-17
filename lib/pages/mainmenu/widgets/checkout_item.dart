@@ -7,8 +7,6 @@ import 'food_item.dart';
 class CheckoutItem extends StatelessWidget {
   final Food checkoutItem;
 
-  List<Food> orderedFood = [];
-
   CheckoutItem(this.checkoutItem);
   @override
   Widget build(BuildContext context) {
