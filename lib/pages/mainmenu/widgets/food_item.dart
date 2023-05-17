@@ -86,8 +86,10 @@ class FoodItem extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              foodItem.desc,
+                              foodItem.restaurantName,
                               style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
                                 color: foodItem.highlight
                                     ? kPrimaryColor
                                     : Colors.grey.withOpacity(0.8),
