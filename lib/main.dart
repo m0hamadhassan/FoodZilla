@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodzilla/pages/splash/splashPage.dart';
-import 'package:foodzilla/test.dart';
+
 import 'package:get/get.dart';
 
 void main() {
@@ -24,7 +24,7 @@ class FoodZilla extends StatelessWidget {
                 minimumSize: MaterialStateProperty.all(Size(150, 60)),
               ),
             ),
-            appBarTheme: AppBarTheme(backgroundColor: Colors.deepPurple),
+            appBarTheme: AppBarTheme(backgroundColor: Colors.black12),
             colorScheme: ColorScheme.dark(primary: Colors.deepPurple
                 // Replace with your desired primary color
                 )),

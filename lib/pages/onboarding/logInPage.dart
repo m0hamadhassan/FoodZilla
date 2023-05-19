@@ -80,7 +80,7 @@ class LoginPage extends StatelessWidget {
   void loginLogicFunction(context) async {
     //this list will be from database
     //database connection variable
-    sqlDb db = new sqlDb();
+    SqlDb db = new SqlDb();
     String userName = loginUserNameController.text;
     String passwrd = loginPasswordController.text;
 

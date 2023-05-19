@@ -5,18 +5,13 @@ class HomePageTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.only(
-        top: 20,
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: 25,
-      ),
+      padding: EdgeInsets.all(8),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: const [
             Text(
-              'Recommended Meals\n',
+              'Recommended Meals',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27),
             ),
           ]),

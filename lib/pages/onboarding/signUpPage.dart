@@ -124,7 +124,7 @@ class SignupPage extends StatelessWidget {
 
 //signUp logic function
   void signUpLogicFunction(context) async {
-    sqlDb db = new sqlDb();
+    SqlDb db = new SqlDb();
     String username = siginUserNameController.text;
     String email = signEmailController.text;
     String password = signPasswordController.text;

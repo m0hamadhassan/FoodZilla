@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:foodzilla/pages/mainmenu/widgets/food_item.dart';
 
 import '../constants/colors/colors.dart';
 import '../models/food.dart';
-import 'food_item.dart';
 
 class CheckoutItem extends StatelessWidget {
   final Food checkoutItem;
+  List<Food> orderedFood = [];
 
   CheckoutItem(this.checkoutItem);
   @override
@@ -26,10 +27,12 @@ class CheckoutItem extends StatelessWidget {
               height: 110,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Image.asset(
-                  checkoutItem.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+                child: checkoutItem.imageBytes != null
+                    ? Image.memory(
+                        checkoutItem.imageBytes!,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(),
               ),
             ),
             Expanded(
@@ -48,18 +51,18 @@ class CheckoutItem extends StatelessWidget {
                         children: [
                           Text(checkoutItem.name,
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 17,
                                 fontWeight: FontWeight.bold,
                                 height: 1.5,
                               )),
                         ],
                       ),
                       Text(
-                        checkoutItem.restaurantName,
+                        checkoutItem.desc,
                         style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: kPrimaryColor,
+                          color: false
+                              ? kPrimaryColor
+                              : Colors.grey.withOpacity(0.8),
                           height: 1.2,
                         ),
                       ),
@@ -73,17 +76,18 @@ class CheckoutItem extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               )),
                           Text(checkoutItem.price.toString(),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontSize: 18,
                               )),
-                          SizedBox(width: 50),
-                          Text('Quantity: ${checkoutItem.quantity}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ))
+                          SizedBox(
+                            width: 100,
+                          ),
+                          Text(
+                            'Quantity: ${checkoutItem.quantity.toString()}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
                         ],
                       ),
                     ]),

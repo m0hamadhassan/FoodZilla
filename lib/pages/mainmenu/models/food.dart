@@ -1,33 +1,16 @@
+import 'dart:typed_data';
+
 class Food {
-  String imageUrl;
-  String restaurantName;
+  Uint8List? imageBytes;
+  String desc;
   String name;
-  // num score;
+  String restName;
+  num score;
   num price;
   num quantity;
-  // bool highlight;
-  Food(
-    this.imageUrl,
-    this.name,
-    this.restaurantName,
-    this.price,
-    this.quantity,
-  );
-}
+  bool highlight;
 
-final List<Food> recommendedFoods = [
-  Food(
-    'assets/pictures/margritaPizza.jpg',
-    'Margarita Pizza',
-    'FoodZilla',
-    12,
-    0,
-  ),
-  Food(
-    'assets/pictures/pepperoniPizza.jpg',
-    'Pepperoni Pizza',
-    'FoodZilla',
-    15,
-    0,
-  ),
-];
+  Food(this.imageBytes, this.name, this.restName, this.desc, this.score,
+      this.price, this.quantity,
+      {this.highlight = false});
+}

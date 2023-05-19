@@ -1,13 +1,13 @@
-import 'food.dart';
+import 'dart:typed_data';
 
 class Restaurant {
-  String name;
-  String label;
-  String logoUrl;
-  String desc;
-  num score;
-  Map<String, List<Food>> menu;
+  final int restId;
+  final Uint8List? imageBytes;
+  final String restName;
 
   Restaurant(
-      this.name, this.label, this.logoUrl, this.desc, this.score, this.menu);
+     this.restId,
+     this.imageBytes,
+     this.restName,
+  );
 }

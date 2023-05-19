@@ -1,13 +1,11 @@
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'dart:typed_data';
 
-import '../pages/mainmenu/models/food2.dart';
+import '../pages/mainmenu/models/food.dart';
+import '../pages/mainmenu/models/restaurant.dart';
 
-class sqlDb {
+class SqlDb {
   static Database? _db;
 
   //if _db exists
@@ -27,7 +25,7 @@ class sqlDb {
     // create name of database
     String path = join(dbPath, 'foodzilla.db'); // db path add to it wael.db
     Database mydb = await openDatabase(path,
-        onCreate: _onCreate, version: 3, onUpgrade: _onUpgrade);
+        onCreate: _onCreate, version: 7, onUpgrade: _onUpgrade);
 
     final exist = await databaseExists(path);
 
@@ -36,7 +34,6 @@ class sqlDb {
       // open db
       //print("db already exists");
       await openDatabase(path);
-      print(path);
     } else {
       //db doesnt exit create
       print("create ");
@@ -47,6 +44,30 @@ class sqlDb {
   }
 
   _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    /*await db.execute('''
+     CREATE TABLE restaurant (
+        restId INTEGER PRIMARY KEY ,
+        restImage  Uint8List,
+        restName TEXT
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE meals (
+        id INTEGER PRIMARY KEY ,
+        mealImage  Uint8List,
+        mealName TEXT,
+        mealPrice REAL,
+        restaurant_id INTEGER,
+        recommended INTEGER DEFAULT 0,
+
+        FOREIGN KEY (restaurant_id) REFERENCES restaurant (restaurant_id)
+      )
+      ''');*/
+  }
+
+  // called only once at creation of db
+  _onCreate(Database db, int version) async {
     await db.execute('''
     CREATE TABLE IF NOT EXISTS "users" (
 	  "id"	INTEGER,
@@ -66,51 +87,29 @@ class sqlDb {
     FOREIGN KEY("userId") REFERENCES "users"("id"),
     FOREIGN KEY("mealId") REFERENCES "meals"("id")
   );
-    ''');
-  }
-
-  // called only once at creation of db
-  _onCreate(Database db, int version) async {
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS "android_metadata" (
-	"locale"	TEXT
-);
-CREATE TABLE IF NOT EXISTS "users" (
-	"id"	INTEGER,
-	"username"	TEXT,
-	"email"	TEXT,
-	"password"	TEXT,
-	"address"	TEXT,
-	"phone_number"	TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT)
-);
-CREATE TABLE IF NOT EXISTS "cart" (
-	"Id"	INTEGER,
-	"mealId"	INTEGER,
-	"userId"	INTEGER,
-	"quantity"	INTEGER,
-	PRIMARY KEY("Id"),
-	FOREIGN KEY("mealId") REFERENCES "meals"("id"),
-	FOREIGN KEY("userId") REFERENCES "users"("id")
-);
-CREATE TABLE IF NOT EXISTS "meals" (
-	"id"	INTEGER,
-	"mealImage"	BLOB,
-	"mealName"	TEXT,
-	"mealPrice"	REAL,
-	"restaurant_id"	INTEGER,
-	"recommended"	INTEGER DEFAULT 0,
-	PRIMARY KEY("id"),
-	FOREIGN KEY("restaurant_id") REFERENCES "restaurant"("restaurant_id")
-);
-CREATE TABLE IF NOT EXISTS "restaurant" (
-	"restId"	INTEGER,
-	"restImage"	BLOB,
-	"restName"	TEXT,
-	PRIMARY KEY("restId")
-);
+  CREATE TABLE IF NOT EXISTS "meals" (
+    "id"	INTEGER,
+    "image"	TEXT,
+    "text"	TEXT,
+    "price"	REAL,
+    "name"	TEXT,
+    PRIMARY KEY("id" AUTOINCREMENT)
+  );
+  );
 
   ''');
+
+    await db.execute('''
+    CREATE TABLE IF NOT EXISTS "cart" (
+        "Id"	INTEGER,
+        "mealId"	INTEGER,
+        "userId"	INTEGER,
+        "quantity"	INTEGER,
+        FOREIGN KEY("userId") REFERENCES "users"("id"),
+    FOREIGN KEY("mealId") REFERENCES "meals"("id"),
+    PRIMARY KEY("Id")
+    )
+    ''');
     print("Oncreate#######################");
   }
 
@@ -162,6 +161,23 @@ CREATE TABLE IF NOT EXISTS "restaurant" (
     return count! > 0;
   }
 
+  Future<void> showDatabaseTables() async {
+    Database? mydb = await db;
+
+    final tables = await mydb
+        ?.query('sqlite_master', where: 'type = ?', whereArgs: ['table']);
+    final tableNames = tables?.map((table) => table['name'] as String).toList();
+
+    for (final tableName in tableNames!) {
+      final columns = await mydb?.rawQuery('PRAGMA table_info($tableName)');
+      final columnNames =
+          columns?.map((column) => column['name'] as String).toList();
+      print('Table: $tableName');
+      print('Columns: $columnNames');
+      // print(records);
+    }
+  }
+
   checkPassword(String username) async {
     if (await isUsernameExists(username)) {
       Database? mydb = await db;
@@ -175,21 +191,13 @@ CREATE TABLE IF NOT EXISTS "restaurant" (
     }
   }
 
-  Future<Uint8List?> getImageBytesFromDatabase(
-      String imgColumn, String tableName) async {
-    String databasePath = await getDatabasesPath();
-    String dbPath = join(databasePath, 'foodzilla.db');
-    Database database = await openDatabase(dbPath);
+  getDatabasePath() async {
+    String dbPath = await getDatabasesPath();
 
-    List<Map<String, dynamic>> result =
-        await database.rawQuery('SELECT $imgColumn FROM $tableName');
+    // create name of database
+    String path = join(dbPath, 'foodzilla.db'); // db path add to it wael.db
 
-    if (result.isNotEmpty) {
-      Uint8List? imageBytes = result.first['$imgColumn'];
-      return imageBytes;
-    }
-
-    return null;
+    print(path);
   }
 
   // to get ids to show images
@@ -210,68 +218,150 @@ CREATE TABLE IF NOT EXISTS "restaurant" (
     return Ids;
   }
 
-  // to show all images
-  Future<Uint8List?> getImages(
-      int id, String imgColumn, String tableName, String idCol) async {
+  Future<List<int>> getRecommendedMeal() async {
     String databasePath = await getDatabasesPath();
     String dbPath = join(databasePath, 'foodzilla.db');
     Database database = await openDatabase(dbPath);
 
-    List<Map<String, dynamic>> result = await database
-        .rawQuery('SELECT $imgColumn FROM $tableName WHERE $idCol = $id');
+    List<Map<String, dynamic>> result =
+        await database.rawQuery('SELECT id FROM meals where recommended = 1 ');
 
-    if (result.isNotEmpty) {
-      Uint8List? imageBytes = result.first['$imgColumn'];
-      return imageBytes;
+    List<int> Ids = [];
+    for (var row in result) {
+      int Id = row['id'];
+      Ids.add(Id);
     }
 
-    return null;
+    return Ids;
   }
 
-  Future<String> getNameFromDatabase(int foodId) async {
+  Future<List<Food>> getFoodDetailsList(List<int> foodIds) async {
+    List<Food> foodList = [];
     Database? mydb = await db;
-    List<Map<String, dynamic>> result = await mydb!
-        .rawQuery('SELECT mealName FROM meals WHERE id = ?', [foodId]);
-    if (result.isNotEmpty) {
-      return result.first['mealName'].toString();
+    String name = "", restName = "", price = "";
+    Uint8List? imageBytes = null;
+
+    for (int foodId in foodIds) {
+      // Fetch name and price from the database or API
+      List<Map<String, dynamic>> result = await mydb!
+          .rawQuery('SELECT mealName FROM meals WHERE id = ?', [foodId]);
+      if (result.isNotEmpty) name = result.first['mealName'].toString();
+
+      //restName
+      List<Map<String, dynamic>> result2 = await mydb.rawQuery('''
+      SELECT restName 
+      FROM meals JOIN restaurant
+      ON restaurant_id=restId
+      WHERE id = ?
+      ''', [foodId]);
+      if (result2.isNotEmpty) restName = result2.first['restName'].toString();
+
+      //price
+      List<Map<String, dynamic>> result3 = await mydb
+          .rawQuery('SELECT mealPrice FROM meals WHERE id = ?', [foodId]);
+      if (result3.isNotEmpty) price = result3.first['mealPrice'].toString();
+
+      // Fetch image bytes from the database or API
+
+      List<Map<String, dynamic>> result4 =
+          await mydb.rawQuery('SELECT mealImage FROM meals WHERE id = $foodId');
+
+      if (result4.isNotEmpty) imageBytes = result4.first['mealImage'];
+
+      // Create a Food object with the retrieved data
+
+      Food food = Food(
+        imageBytes,
+        // Assuming the image file names follow a specific pattern
+        name,
+        restName,
+        '',
+        0.0,
+        // You can set the rating, sales, and other properties accordingly
+        double.parse(price),
+        0,
+      );
+
+      foodList.add(food);
     }
-    return '';
+
+    return foodList;
   }
 
-  Future<String> getPriceFromDatabase(int foodId) async {
+  Future<List<Restaurant>> getRestaurantDetailsList(List<int> restIds) async {
+    List<Restaurant> restList = [];
     Database? mydb = await db;
-    List<Map<String, dynamic>> result = await mydb!
-        .rawQuery('SELECT mealPrice FROM meals WHERE id = ?', [foodId]);
-    if (result.isNotEmpty) {
-      return result.first['mealPrice'].toString();
+    String name = "";
+    Uint8List? imageBytes = null;
+
+    for (int restId in restIds) {
+      List<Map<String, dynamic>> result = await mydb!
+          .rawQuery('SELECT restName FROM restaurant WHERE id = ?', [restId]);
+      if (result.isNotEmpty) name = result.first['restName'].toString();
+
+      List<Map<String, dynamic>> result4 = await mydb
+          .rawQuery('SELECT restImage FROM restaurant WHERE id = $restId');
+      if (result4.isNotEmpty) imageBytes = result4.first['restImage'];
+
+      Restaurant restaurant = Restaurant(restId, imageBytes, name);
+      restList.add(restaurant);
     }
-    return '';
-  }
 
-  Future<Food2> getFoodDetails(
-    String imgColumn,
-    String tableName,
-    String idCol,
-    int foodId,
-  ) async {
-    // Perform database query or API call to fetch food details
-    // Here's an example of how you can retrieve the necessary information
-
-    // Fetch image bytes from the database or API
-    Uint8List? imageBytes =
-        await getImages(foodId, imgColumn, tableName, idCol);
-
-    // Fetch name and price from the database or API
-    String name = await getNameFromDatabase(foodId);
-    String price = await getPriceFromDatabase(foodId);
-
-    // Create a Food object with the retrieved data
-    Food2 food = Food2(
-      imageBytes: imageBytes,
-      name: name,
-      price: price,
-    );
-
-    return food;
+    return restList;
   }
 }
+
+
+
+/*
+Future<List<Restaurant>> getRestaurants() async {
+  Database? mydb = await db;
+  final List<Map<String, dynamic>> maps = await mydb!.query('restaurant');
+
+  return List.generate(maps.length, (i) {
+    return Restaurant(
+      restId: maps[i]['restId'],
+      restImage: maps[i]['restImage'],
+      restName: maps[i]['restName'],
+    );
+  });
+}
+
+
+
+// Create a function to retrieve the food image from the database
+Future<List<int>> getFoodImage() async {
+  String databasePath = await getDatabasePath();
+  Database database = await openDatabase(databasePath);
+  List<Map<String, dynamic>> results = await database.query('foods',
+      columns: ['image'], limit: 1, orderBy: 'id DESC');
+  await database.close();
+  if (results.isNotEmpty) {
+    List<int> imageBytes = results.first['image'].cast<int>();
+    return imageBytes;
+  } else {
+    return [];
+  }
+}
+
+
+
+// Load image as Uint8List (byte array) from asset file
+Future<Uint8List> loadImageFromAssets(String imagePath) async {
+  final ByteData imageBytes = await rootBundle.load(imagePath);
+  return imageBytes.buffer.asUint8List();
+}
+
+
+/*Future<void> insertFoodImage(String imagePath) async {
+    Uint8List imageBytes = await loadImageFromAssets(imagePath);
+
+    String databasePath = await getDatabasesPath();
+    String dbPath = join(databasePath, 'foodzilla2.db');
+    Database database = await openDatabase(dbPath);
+
+    String imageName = basename(imagePath);
+    await database.rawInsert('INSERT INTO foods VALUES(2,?)', [imageBytes]);
+  }*/
+
+*/

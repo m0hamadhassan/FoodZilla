@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:foodzilla/pages/mainmenu/models/restaurant.dart';
 
-import '../constants/colors/colors.dart';
-import '../models/food.dart';
+import '../../mainmenu/constants/colors/colors.dart';
+import '../../mainmenu/models/food.dart';
 
-class FoodItem extends StatelessWidget {
-  final Food foodItem;
-  static num totalPrice = 0;
+class RestaurantITem extends StatelessWidget {
+  final Restaurant restItem;
+
   static List<Food> checkoutList = [];
-
-  final snackBar = SnackBar(
-    duration: Duration(milliseconds: 800),
-    content: const Text(
-      'New Meal added to cart',
-      style: TextStyle(color: Colors.white, fontSize: 17),
-    ),
-    backgroundColor: (Colors.purple),
-  );
-
-  FoodItem(this.foodItem);
+  RestaurantITem(this.restItem);
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -28,18 +19,9 @@ class FoodItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
             child: Material(
               child: InkWell(
-                onTap: () => {
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar),
-                  totalPrice += foodItem.price,
-                  if (foodItem.quantity == 0)
-                    {
-                      checkoutList.add(foodItem),
-                    },
-                  checkoutList[checkoutList.indexOf(foodItem)].quantity += 1,
-                  print(checkoutList[checkoutList.indexOf(foodItem)].quantity),
-                },
+                onTap: () => {},
                 child: Ink(
-                  height: 120,
+                  height: 100,
                   decoration: BoxDecoration(
                     color: Colors.deepPurple,
                     borderRadius: BorderRadius.circular(15),
@@ -47,13 +29,13 @@ class FoodItem extends StatelessWidget {
                   child: Row(children: [
                     Ink(
                       padding: EdgeInsets.all(5),
-                      width: 120,
+                      width: 110,
                       height: 110,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
-                        child: foodItem.imageBytes != null
+                        child: restItem.imageBytes != null
                             ? Image.memory(
-                                foodItem.imageBytes!,
+                                restItem.imageBytes!,
                                 fit: BoxFit.cover,
                               )
                             : Container(),
@@ -76,7 +58,7 @@ class FoodItem extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
-                                      child: Text(foodItem.name,
+                                      child: Text(restItem.restName,
                                           style: TextStyle(
                                             fontSize: 17,
                                             fontWeight: FontWeight.bold,
@@ -85,38 +67,20 @@ class FoodItem extends StatelessWidget {
                                     ),
                                     Icon(
                                       Icons.add_circle_outlined,
-                                      size: 35,
+                                      size: 30,
                                     ),
                                   ],
                                 ),
                                 Text(
-                                  foodItem.restName,
+                                  restItem.restName,
                                   style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     color: kPrimaryColor,
                                     height: 1.2,
                                   ),
                                 ),
                                 SizedBox(height: 6),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Text('\$',
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      Text(foodItem.price.toString(),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                          )),
-                                    ],
-                                  ),
-                                ),
                               ]),
                         ),
                       ),
@@ -131,7 +95,6 @@ class FoodItem extends StatelessWidget {
           ),
         ],
       ),
-      // flex: 1,
     );
   }
 }
