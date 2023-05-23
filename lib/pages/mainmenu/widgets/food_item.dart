@@ -14,61 +14,63 @@ class FoodItem extends StatelessWidget {
       'New Meal added to cart',
       style: TextStyle(color: Colors.white, fontSize: 17),
     ),
-    backgroundColor: (Colors.purple),
+    backgroundColor: Colors.purple,
   );
 
   FoodItem(this.foodItem);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Material(
-              child: InkWell(
-                onTap: () => {
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar),
-                  totalPrice += foodItem.price,
-                  if (foodItem.quantity == 0)
-                    {
-                      checkoutList.add(foodItem),
-                    },
-                  checkoutList[checkoutList.indexOf(foodItem)].quantity += 1,
-                  print(checkoutList[checkoutList.indexOf(foodItem)].quantity),
-                },
-                child: Ink(
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: Colors.deepPurple,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(children: [
-                    Ink(
-                      padding: EdgeInsets.all(5),
-                      width: 120,
-                      height: 110,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: foodItem.imageBytes != null
-                            ? Image.memory(
-                                foodItem.imageBytes!,
-                                fit: BoxFit.cover,
-                              )
-                            : Container(),
-                      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Material(
+                child: InkWell(
+                  onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    totalPrice += foodItem.price;
+                    if (foodItem.quantity == 0) {
+                      checkoutList.add(foodItem);
+                    }
+                    checkoutList[checkoutList.indexOf(foodItem)].quantity += 1;
+                    print(
+                        checkoutList[checkoutList.indexOf(foodItem)].quantity);
+                  },
+                  child: Ink(
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: Colors.deepPurple,
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: 5,
-                          left: 10,
-                          right: 10,
-                          bottom: 15,
+                    child: Row(
+                      children: [
+                        Ink(
+                          padding: EdgeInsets.all(5),
+                          width: 120,
+                          height: 110,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: foodItem.imageBytes != null
+                                ? Image.memory(
+                                    foodItem.imageBytes!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Container(),
+                          ),
                         ),
-                        child: Expanded(
-                          child: Column(
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              top: 5,
+                              left: 10,
+                              right: 10,
+                              bottom: 15,
+                            ),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
@@ -76,12 +78,14 @@ class FoodItem extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
-                                      child: Text(foodItem.name,
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            height: 1.5,
-                                          )),
+                                      child: Text(
+                                        foodItem.name,
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold,
+                                          height: 1.5,
+                                        ),
+                                      ),
                                     ),
                                     Icon(
                                       Icons.add_circle_outlined,
@@ -99,39 +103,42 @@ class FoodItem extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 6),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Text('\$',
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      Text(foodItem.price.toString(),
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                          )),
-                                    ],
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      '\$',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      foodItem.price.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ]),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    )
-                  ]),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-        ],
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
       ),
-      // flex: 1,
     );
   }
 }
