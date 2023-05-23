@@ -295,12 +295,12 @@ class SqlDb {
     Uint8List? imageBytes = null;
 
     for (int restId in restIds) {
-      List<Map<String, dynamic>> result = await mydb!
-          .rawQuery('SELECT restName FROM restaurant WHERE id = ?', [restId]);
+      List<Map<String, dynamic>> result = await mydb!.rawQuery(
+          'SELECT restName FROM restaurant WHERE restId = ?', [restId]);
       if (result.isNotEmpty) name = result.first['restName'].toString();
 
       List<Map<String, dynamic>> result4 = await mydb
-          .rawQuery('SELECT restImage FROM restaurant WHERE id = $restId');
+          .rawQuery('SELECT restImage FROM restaurant WHERE restId = $restId');
       if (result4.isNotEmpty) imageBytes = result4.first['restImage'];
 
       Restaurant restaurant = Restaurant(restId, imageBytes, name);

@@ -65,22 +65,8 @@ class RestaurantITem extends StatelessWidget {
                                             height: 1.5,
                                           )),
                                     ),
-                                    Icon(
-                                      Icons.add_circle_outlined,
-                                      size: 30,
-                                    ),
                                   ],
                                 ),
-                                Text(
-                                  restItem.restName,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: kPrimaryColor,
-                                    height: 1.2,
-                                  ),
-                                ),
-                                SizedBox(height: 6),
                               ]),
                         ),
                       ),

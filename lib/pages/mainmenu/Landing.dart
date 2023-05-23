@@ -17,18 +17,17 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  int _selectedIndex = 0;
-  TextEditingController _searchController = TextEditingController();
+  //int _selectedIndex = 0;
 
-  var selected = 0;
-  final TextEditingController _textEditingController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
+  //var selected = 0;
   SqlDb db = new SqlDb();
+
   // void _onItemTapped(int index) {
   //   setState(() {
   //     _selectedIndex = index;
   //   });
   // }
-
   Future<List<int>> getid() async {
     List<int> foodIds =
         await db.getRecommendedMeal(); // Example list of food IDs
