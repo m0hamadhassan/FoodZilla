@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:foodzilla/pages/mainmenu/models/restaurant.dart';
+import 'package:foodzilla/pages/mealsPage/mealsPage.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
+import '../../../database/database.dart';
 import '../../mainmenu/constants/colors/colors.dart';
 import '../../mainmenu/models/food.dart';
 
 class RestaurantITem extends StatelessWidget {
+  RestaurantITem(this.restItem);
+  SqlDb db = new SqlDb();
   final Restaurant restItem;
 
   static List<Food> checkoutList = [];
-  RestaurantITem(this.restItem);
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -19,7 +25,7 @@ class RestaurantITem extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
             child: Material(
               child: InkWell(
-                onTap: () => {},
+                onTap: () => {Get.to(MealsPage(restItem.restId.toString()))},
                 child: Ink(
                   height: 100,
                   decoration: BoxDecoration(

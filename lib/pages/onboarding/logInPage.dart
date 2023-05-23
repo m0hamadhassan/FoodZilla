@@ -123,7 +123,9 @@ class LoginPage extends StatelessWidget {
           },
         );
       } else {
-        Get.off(LandingPage());
+        Get.off(LandingPage(
+          userName,
+        ));
       }
     }
     print(returnPass);

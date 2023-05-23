@@ -226,13 +226,30 @@ class SqlDb {
     List<Map<String, dynamic>> result =
         await database.rawQuery('SELECT id FROM meals where recommended = 1 ');
 
-    List<int> Ids = [];
+    List<int> ids = [];
     for (var row in result) {
-      int Id = row['id'];
-      Ids.add(Id);
+      int id = row['id'];
+      ids.add(id);
     }
 
-    return Ids;
+    return ids;
+  }
+
+  Future<List<int>> getAllMeals() async {
+    String databasePath = await getDatabasesPath();
+    String dbPath = join(databasePath, 'foodzilla.db');
+    Database database = await openDatabase(dbPath);
+
+    List<Map<String, dynamic>> result =
+        await database.rawQuery('SELECT id FROM meals ');
+
+    List<int> ids = [];
+    for (var row in result) {
+      int id = row['id'];
+      ids.add(id);
+    }
+
+    return ids;
   }
 
   Future<List<Food>> getFoodDetailsList(List<int> foodIds) async {
@@ -308,6 +325,111 @@ class SqlDb {
     }
 
     return restList;
+  }
+
+  Future<String> getAddressByUsername(String username) async {
+    Database? mydb = await db;
+    List<Map<String, dynamic>> result = await mydb!.rawQuery(
+      'SELECT address FROM "users" WHERE username = ?',
+      [username],
+    );
+
+    if (result.isNotEmpty) {
+      return result.first['address'];
+    } else {
+      return "";
+    }
+  }
+
+  Future<List<Food>> getFoodDetailsListByRestaurantId(int restaurantId) async {
+    List<Food> foodList = [];
+    Database? mydb = await db;
+
+    // Fetch food details based on the restaurant ID
+    List<Map<String, dynamic>> result = await mydb!.rawQuery('''
+    SELECT m.id, m.mealImage, m.mealName, m.mealPrice, r.restName
+    FROM meals AS m
+    INNER JOIN restaurant AS r ON m.restaurant_id = r.restId
+    WHERE m.restaurant_id = ?
+  ''', [restaurantId]);
+
+    for (var row in result) {
+      int id = row['id'];
+      Uint8List? imageBytes = row['mealImage'];
+      String name = row['mealName'];
+      double price = row['mealPrice'];
+      String restName = row['restName'];
+
+      Food food = Food(
+        imageBytes,
+        name,
+        restName,
+        '',
+        0,
+        price,
+        0,
+      );
+
+      foodList.add(food);
+    }
+
+    return foodList;
+  }
+
+  Future<List<Food>> searchMealsByName(String mealName) async {
+    List<Food> foodList = [];
+    Database? mydb = await db;
+
+    // Fetch food details based on the meal name
+    List<Map<String, dynamic>> result = await mydb!.rawQuery('''
+    SELECT m.id, m.mealImage, m.mealName, m.mealPrice, r.restName
+    FROM meals AS m
+    INNER JOIN restaurant AS r ON m.restaurant_id = r.restId
+    WHERE m.mealName LIKE '%' || ? || '%'
+  ''', [mealName]);
+
+    for (var row in result) {
+      int id = row['id'];
+      Uint8List? imageBytes = row['mealImage'];
+      String name = row['mealName'];
+      double price = row['mealPrice'];
+      String restName = row['restName'];
+
+      Food food = Food(
+        imageBytes,
+        name,
+        restName,
+        '',
+        0,
+        price,
+        0,
+      );
+
+      foodList.add(food);
+    }
+
+    return foodList;
+  }
+
+  Future<List<Restaurant>> searchRestaurantsByName(String name) async {
+    Database? mydb = await db;
+
+    List<Map<String, dynamic>> result = await mydb!.rawQuery(
+      'SELECT * FROM restaurant WHERE restName LIKE ?',
+      ['%$name%'],
+    );
+
+    List<Restaurant> restaurants = [];
+    for (var row in result) {
+      int restId = row['restId'];
+      Uint8List? restImage = row['restImage'];
+      String restName = row['restName'];
+
+      Restaurant restaurant = Restaurant(restId, restImage, restName);
+      restaurants.add(restaurant);
+    }
+
+    return restaurants;
   }
 }
 

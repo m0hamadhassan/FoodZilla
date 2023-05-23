@@ -6,8 +6,6 @@ import '../models/food.dart';
 
 class CheckoutItem extends StatelessWidget {
   final Food checkoutItem;
-  List<Food> orderedFood = [];
-
   CheckoutItem(this.checkoutItem);
   @override
   Widget build(BuildContext context) {
@@ -15,7 +13,7 @@ class CheckoutItem extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          height: 100,
+          height: 120,
           decoration: BoxDecoration(
             color: Colors.deepPurple,
             borderRadius: BorderRadius.circular(15),
@@ -49,22 +47,15 @@ class CheckoutItem extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(checkoutItem.name,
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                height: 1.5,
-                              )),
+                          Expanded(
+                            child: Text(checkoutItem.name,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.5,
+                                )),
+                          ),
                         ],
-                      ),
-                      Text(
-                        checkoutItem.desc,
-                        style: TextStyle(
-                          color: false
-                              ? kPrimaryColor
-                              : Colors.grey.withOpacity(0.8),
-                          height: 1.2,
-                        ),
                       ),
                       SizedBox(height: 6),
                       Row(
