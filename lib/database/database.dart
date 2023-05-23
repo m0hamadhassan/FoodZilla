@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:typed_data';
@@ -13,35 +14,26 @@ class SqlDb {
 
   Future<Database?> get db async {
     if (_db == null) {
-      _db = await intializeDb();
+      _db = await initializeDb();
       return _db;
     } else {
       return _db;
     }
   }
 
-  intializeDb() async {
+  initializeDb() async {
     String dbPath = await getDatabasesPath();
+    String path = join(dbPath, 'foodzilla.db');
+    bool dbExists = await databaseExists(path);
 
-    // create name of database
-    String path = join(dbPath, 'foodzilla.db'); // db path add to it wael.db
-    Database mydb = await openDatabase(path,
-        onCreate: _onCreate, version: 7, onUpgrade: _onUpgrade);
-
-    final exist = await databaseExists(path);
-
-    if (exist) {
-      //db already exist
-      // open db
-      //print("db already exists");
-      await openDatabase(path);
-    } else {
-      //db doesnt exit create
-      print("create ");
-      print(path);
+    if (!dbExists) {
+      ByteData data = await rootBundle.load('assets/foodzilla.db');
+      List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File(path).writeAsBytes(bytes);
     }
 
-    return mydb;
+    return openDatabase(path);
   }
 
   _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -66,52 +58,39 @@ class SqlDb {
       )
       ''');*/
   }
-  Future<String> importSqlFileToString(String filePath) async {
-    try {
-      File file = File(filePath);
-      String contents = await file.readAsString();
-      return contents;
-    } catch (e) {
-      print('Error importing SQL file: $e');
-      return '';
-    }
-  }
 
   // called only once at creation of db
   _onCreate(Database db, int version) async {
-    String create =
-        await importSqlFileToString('lib\\database\\foodzilla.db.sql');
-    await db.execute(create);
-    //   await db.execute('''
-    //   CREATE TABLE IF NOT EXISTS "users" (
-    //   "id"	INTEGER,
-    //   "username"	TEXT,
-    //   "email"	TEXT,
-    //   "password"	TEXT,
-    //   "address"	TEXT,
-    //   "phone_number"	TEXT,
-    //   PRIMARY KEY("id" AUTOINCREMENT)
-    //   );
-    //   CREATE TABLE IF NOT EXISTS "cart" (
-    //   "Id"	INTEGER,
-    //   "mealId"	INTEGER,
-    //   "userId"	INTEGER,
-    //   "quantity"	INTEGER,
-    //   PRIMARY KEY("Id"),
-    //   FOREIGN KEY("userId") REFERENCES "users"("id"),
-    //   FOREIGN KEY("mealId") REFERENCES "meals"("id")
-    // );
-    // CREATE TABLE IF NOT EXISTS "meals" (
-    //   "id"	INTEGER,
-    //   "image"	TEXT,
-    //   "text"	TEXT,
-    //   "price"	REAL,
-    //   "name"	TEXT,
-    //   PRIMARY KEY("id" AUTOINCREMENT)
-    // );
-    // );
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS "users" (
+      "id"	INTEGER,
+      "username"	TEXT,
+      "email"	TEXT,
+      "password"	TEXT,
+      "address"	TEXT,
+      "phone_number"	TEXT,
+      PRIMARY KEY("id" AUTOINCREMENT)
+      );
+      CREATE TABLE IF NOT EXISTS "cart" (
+      "Id"	INTEGER,
+      "mealId"	INTEGER,
+      "userId"	INTEGER,
+      "quantity"	INTEGER,
+      PRIMARY KEY("Id"),
+      FOREIGN KEY("userId") REFERENCES "users"("id"),
+      FOREIGN KEY("mealId") REFERENCES "meals"("id")
+    );
+    CREATE TABLE IF NOT EXISTS "meals" (
+      "id"	INTEGER,
+      "image"	TEXT,
+      "text"	TEXT,
+      "price"	REAL,
+      "name"	TEXT,
+      PRIMARY KEY("id" AUTOINCREMENT)
+    );
+    );
 
-    // ''');
+    ''');
 
     await db.execute('''
     CREATE TABLE IF NOT EXISTS "cart" (
