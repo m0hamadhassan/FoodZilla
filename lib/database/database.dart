@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import '../pages/mainmenu/models/food.dart';
 import '../pages/mainmenu/models/restaurant.dart';
+import 'dart:io';
 
 class SqlDb {
   static Database? _db;
@@ -65,39 +66,52 @@ class SqlDb {
       )
       ''');*/
   }
+  Future<String> importSqlFileToString(String filePath) async {
+    try {
+      File file = File(filePath);
+      String contents = await file.readAsString();
+      return contents;
+    } catch (e) {
+      print('Error importing SQL file: $e');
+      return '';
+    }
+  }
 
   // called only once at creation of db
   _onCreate(Database db, int version) async {
-    await db.execute('''
-    CREATE TABLE IF NOT EXISTS "users" (
-	  "id"	INTEGER,
-	  "username"	TEXT,
-	  "email"	TEXT,
-	  "password"	TEXT,
-	  "address"	TEXT,
-	  "phone_number"	TEXT,
-	  PRIMARY KEY("id" AUTOINCREMENT)
-    );
-    CREATE TABLE IF NOT EXISTS "cart" (
-    "Id"	INTEGER,
-    "mealId"	INTEGER,
-    "userId"	INTEGER,
-    "quantity"	INTEGER,
-    PRIMARY KEY("Id"),
-    FOREIGN KEY("userId") REFERENCES "users"("id"),
-    FOREIGN KEY("mealId") REFERENCES "meals"("id")
-  );
-  CREATE TABLE IF NOT EXISTS "meals" (
-    "id"	INTEGER,
-    "image"	TEXT,
-    "text"	TEXT,
-    "price"	REAL,
-    "name"	TEXT,
-    PRIMARY KEY("id" AUTOINCREMENT)
-  );
-  );
+    String create =
+        await importSqlFileToString('lib\\database\\foodzilla.db.sql');
+    await db.execute(create);
+    //   await db.execute('''
+    //   CREATE TABLE IF NOT EXISTS "users" (
+    //   "id"	INTEGER,
+    //   "username"	TEXT,
+    //   "email"	TEXT,
+    //   "password"	TEXT,
+    //   "address"	TEXT,
+    //   "phone_number"	TEXT,
+    //   PRIMARY KEY("id" AUTOINCREMENT)
+    //   );
+    //   CREATE TABLE IF NOT EXISTS "cart" (
+    //   "Id"	INTEGER,
+    //   "mealId"	INTEGER,
+    //   "userId"	INTEGER,
+    //   "quantity"	INTEGER,
+    //   PRIMARY KEY("Id"),
+    //   FOREIGN KEY("userId") REFERENCES "users"("id"),
+    //   FOREIGN KEY("mealId") REFERENCES "meals"("id")
+    // );
+    // CREATE TABLE IF NOT EXISTS "meals" (
+    //   "id"	INTEGER,
+    //   "image"	TEXT,
+    //   "text"	TEXT,
+    //   "price"	REAL,
+    //   "name"	TEXT,
+    //   PRIMARY KEY("id" AUTOINCREMENT)
+    // );
+    // );
 
-  ''');
+    // ''');
 
     await db.execute('''
     CREATE TABLE IF NOT EXISTS "cart" (
