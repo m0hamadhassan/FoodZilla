@@ -334,6 +334,20 @@ class SqlDb {
     }
   }
 
+  Future<String> getMobileByUsername(String username) async {
+    Database? mydb = await db;
+    List<Map<String, dynamic>> result = await mydb!.rawQuery(
+      'SELECT phone_number FROM "users" WHERE username = ?',
+      [username],
+    );
+
+    if (result.isNotEmpty) {
+      return result.first['phone_number'];
+    } else {
+      return "";
+    }
+  }
+
   Future<List<Food>> getFoodDetailsListByRestaurantId(int restaurantId) async {
     List<Food> foodList = [];
     Database? mydb = await db;

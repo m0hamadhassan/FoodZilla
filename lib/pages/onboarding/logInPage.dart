@@ -5,14 +5,6 @@ import '../../database/database.dart';
 import '../mainmenu/Landing.dart';
 
 class LoginPage extends StatelessWidget {
-  // final snackBar = SnackBar(
-  //   duration: Duration(milliseconds: 1000),
-  //   content: const Text(
-  //     'Wrong Username or Password',
-  //     style: TextStyle(color: Colors.white, fontSize: 18),
-  //   ),
-  //   backgroundColor: (Colors.red),
-  // );
   //for login logic
   final TextEditingController loginUserNameController = TextEditingController();
   final TextEditingController loginPasswordController = TextEditingController();

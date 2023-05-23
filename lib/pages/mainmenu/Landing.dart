@@ -25,10 +25,6 @@ class _LandingPageState extends State<LandingPage> {
   //var selected = 0;
   SqlDb db = new SqlDb();
 
-  void _performSearch(String searchText) {
-    // Perform search logic here
-    print('Searching for: $searchText');
-  }
   //for all meals in meals page
   // method
   //for restaurent 'restId','restaurent'
@@ -48,15 +44,12 @@ class _LandingPageState extends State<LandingPage> {
     ));
     Future<List<Food>> foodListFuture =
         getid().then((foodIds) => db.getFoodDetailsList(foodIds));
+    if (FoodItem.checkoutList.isEmpty) {
+      FoodItem.totalPrice = 0;
+    }
 
     return Scaffold(
       body: Container(
-        // decoration: BoxDecoration(
-        //     gradient: LinearGradient(
-        //   colors: [leftGradient, rightGradient],
-        //   begin: Alignment.centerLeft,
-        //   end: Alignment.centerRight,
-        // )),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

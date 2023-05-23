@@ -26,6 +26,8 @@ class CheckoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<String> address = db.getAddressByUsername(userName);
+    Future<String> mobile = db.getMobileByUsername(userName);
+
     return Scaffold(
       appBar: AppBar(title: Text('Confirm Checkout')),
       body: Padding(
@@ -67,6 +69,30 @@ class CheckoutPage extends StatelessWidget {
                           // Otherwise, display the retrieved address
                           String address = snapshot.data ?? '';
                           return Text('Address: $address',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ));
+                        }
+                      }),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  FutureBuilder<String>(
+                      future: mobile,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          // While waiting for the future to complete, show a loading indicator
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          // If an error occurred while fetching the address, display an error message
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          // Otherwise, display the retrieved address
+                          String mobile = snapshot.data ?? '';
+                          return Text('Mobile: $mobile',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,

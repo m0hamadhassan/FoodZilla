@@ -23,7 +23,7 @@ class FoodList extends StatelessWidget {
           final List<Food> foodList =
               snapshot.data!; // Access the retrieved food list
           return Container(
-            padding: EdgeInsets.symmetric(horizontal: 25),
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: ListView.builder(
               itemCount: foodList.length,
               itemBuilder: (ctx, index) {
