@@ -160,6 +160,10 @@ class _LandingPageState extends State<LandingPage> {
                           ),
                           OutlinedButton(
                               onPressed: () => {
+                                    for (var i = 0;
+                                        i < FoodItem.checkoutList.length;
+                                        i++)
+                                      {FoodItem.checkoutList[i].quantity = 0},
                                     FoodItem.checkoutList.clear(),
                                     FoodItem.totalPrice = 0,
                                     Navigator.pop(context),
