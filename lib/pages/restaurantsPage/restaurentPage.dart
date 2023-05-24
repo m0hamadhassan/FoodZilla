@@ -23,9 +23,11 @@ class RestaurantsPage extends StatelessWidget {
           centerTitle: true,
           title: Text(
               "Restaurants List")), // Corrected the word "Restaurents" to "Restaurants"
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: RestaurantList(restListFuture),
+      body: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: RestaurantList(restListFuture),
+        ),
       ),
     );
   }

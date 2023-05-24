@@ -19,6 +19,17 @@ class SignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              tileMode: TileMode
+                  .clamp, // Use TileMode.clamp to fix the sharp gradient
+              begin: Alignment.centerRight,
+              end: Alignment.centerLeft,
+              colors: [
+            Color.fromRGBO(0, 0, 0, 1),
+            Color.fromRGBO(67, 67, 67, 0),
+            Color.fromRGBO(0, 0, 0, 1),
+          ])),
       padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 65.0),
       child: SingleChildScrollView(
         child: Column(
