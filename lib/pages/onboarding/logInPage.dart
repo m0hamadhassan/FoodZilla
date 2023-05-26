@@ -53,10 +53,6 @@ class LoginPage extends StatelessWidget {
                   SizedBox(height: 24.0),
                   ElevatedButton(
                     onPressed: () async {
-                      // Implement login logic here
-                      // List<Map> response2 =
-                      //     await db.checkPassword(loginUserNameController.text);
-                      // print(response2[0]['password']);
                       loginLogicFunction(context);
                     },
                     child: Text('Login', style: TextStyle(fontSize: 25)),

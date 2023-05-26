@@ -37,7 +37,7 @@ class SqlDb {
   }
 
   _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    /*await db.execute('''
+    await db.execute('''
      CREATE TABLE restaurant (
         restId INTEGER PRIMARY KEY ,
         restImage  Uint8List,
@@ -56,7 +56,7 @@ class SqlDb {
 
         FOREIGN KEY (restaurant_id) REFERENCES restaurant (restaurant_id)
       )
-      ''');*/
+      ''');
   }
 
   // called only once at creation of db
