@@ -37,7 +37,7 @@ class SqlDb {
   }
 
   _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    /*await db.execute('''
+    await db.execute('''
      CREATE TABLE restaurant (
         restId INTEGER PRIMARY KEY ,
         restImage  Uint8List,
@@ -56,7 +56,7 @@ class SqlDb {
 
         FOREIGN KEY (restaurant_id) REFERENCES restaurant (restaurant_id)
       )
-      ''');*/
+      ''');
   }
 
   // called only once at creation of db
@@ -439,58 +439,3 @@ class SqlDb {
     return restaurants;
   }
 }
-
-
-
-/*
-Future<List<Restaurant>> getRestaurants() async {
-  Database? mydb = await db;
-  final List<Map<String, dynamic>> maps = await mydb!.query('restaurant');
-
-  return List.generate(maps.length, (i) {
-    return Restaurant(
-      restId: maps[i]['restId'],
-      restImage: maps[i]['restImage'],
-      restName: maps[i]['restName'],
-    );
-  });
-}
-
-
-
-// Create a function to retrieve the food image from the database
-Future<List<int>> getFoodImage() async {
-  String databasePath = await getDatabasePath();
-  Database database = await openDatabase(databasePath);
-  List<Map<String, dynamic>> results = await database.query('foods',
-      columns: ['image'], limit: 1, orderBy: 'id DESC');
-  await database.close();
-  if (results.isNotEmpty) {
-    List<int> imageBytes = results.first['image'].cast<int>();
-    return imageBytes;
-  } else {
-    return [];
-  }
-}
-
-
-
-// Load image as Uint8List (byte array) from asset file
-Future<Uint8List> loadImageFromAssets(String imagePath) async {
-  final ByteData imageBytes = await rootBundle.load(imagePath);
-  return imageBytes.buffer.asUint8List();
-}
-
-
-/*Future<void> insertFoodImage(String imagePath) async {
-    Uint8List imageBytes = await loadImageFromAssets(imagePath);
-
-    String databasePath = await getDatabasesPath();
-    String dbPath = join(databasePath, 'foodzilla2.db');
-    Database database = await openDatabase(dbPath);
-
-    String imageName = basename(imagePath);
-    await database.rawInsert('INSERT INTO foods VALUES(2,?)', [imageBytes]);
-  }*/
-
-*/

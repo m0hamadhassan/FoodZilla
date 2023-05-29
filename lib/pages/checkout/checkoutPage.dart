@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodzilla/pages/checkout/widgets/checkoutPageItem.dart';
 import 'package:foodzilla/pages/mainmenu/Landing.dart';
 import 'package:foodzilla/pages/mainmenu/widgets/checkout_list.dart';
 import 'package:get/get.dart';
