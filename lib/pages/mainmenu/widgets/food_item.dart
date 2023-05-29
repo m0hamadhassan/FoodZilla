@@ -106,7 +106,7 @@ class FoodItem extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      '\$',
+                                      'EGP',
                                       style: TextStyle(
                                         fontSize: 10,
                                         color: Colors.white,
